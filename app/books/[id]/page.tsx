@@ -1,7 +1,10 @@
+// app/books/[id]/page.tsx
 import BookDetailClient from "@/components/books/BookDetailClient";
 
+export const dynamicParams = true;
+export const revalidate = 60;
+
 export async function generateStaticParams() {
-  // Fetch books from your GraphQL API
   const res = await fetch(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT!, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -14,7 +17,6 @@ export async function generateStaticParams() {
         }
       `,
     }),
-    next: { revalidate: 60 },
   });
 
   const { data } = await res.json();
@@ -23,6 +25,5 @@ export async function generateStaticParams() {
 }
 
 export default function BookDetailPage({ params }: { params: { id: string } }) {
-  const bookId = params.id;
-  return <BookDetailClient bookId={bookId} />;
+  return <BookDetailClient bookId={params.id} />;
 }
