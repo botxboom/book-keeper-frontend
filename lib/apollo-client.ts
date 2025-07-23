@@ -2,6 +2,8 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 const uri = process.env.NEXT_PUBLIC_GRAPHQL_URL;
+console.log(uri);
+console.log(uri?.toString());
 
 if (!uri && process.env.NODE_ENV === "production") {
   throw new Error("NEXT_PUBLIC_GRAPHQL_URL is not defined in production!");
