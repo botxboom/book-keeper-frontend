@@ -36,6 +36,7 @@ export default function BookDetailClient({ bookId }: { bookId: string }) {
   const { data, loading, error, refetch } = useQuery(GET_BOOKS, {
     variables: { filter: "", page: 1, limit: 100 },
     errorPolicy: "all",
+    fetchPolicy: "network-only",
   });
 
   const [deleteBook, { loading: deleting }] = useMutation(DELETE_BOOK, {

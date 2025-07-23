@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BookOpen, Search, User, Plus, Menu, X } from "lucide-react";
+import { BookOpen, Search, User, Plus, Menu, X, Book } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 export function Header() {
@@ -21,7 +21,7 @@ export function Header() {
             href="/"
             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
           >
-            <BookOpen className="h-8 w-8" />
+            <Book className="h-8 w-8" />
             <span className="text-xl font-bold">Book Keeper</span>
           </Link>
 

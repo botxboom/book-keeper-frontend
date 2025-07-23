@@ -17,9 +17,10 @@ export default function AuthorDetailClient({ authorId }: { authorId: string }) {
   const router = useRouter();
   const { session } = useAuth();
 
-  const { data, loading, error, refetch } = useQuery(GET_AUTHORS, {
+  const { data, loading, error } = useQuery(GET_AUTHORS, {
     variables: { filter: "", page: 1, limit: 100 },
     errorPolicy: "all",
+    fetchPolicy: "network-only",
   });
 
   const [deleteAuthor, { loading: deleting }] = useMutation(DELETE_AUTHOR, {
