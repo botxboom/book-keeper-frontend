@@ -73,8 +73,6 @@ export function AuthorForm({ author, onCancel }: AuthorFormProps) {
         avatar,
       };
 
-      console.log(input);
-
       if (isEdit && author?.id) {
         await updateAuthor({
           variables: { id: author.id, ...input },
@@ -98,8 +96,6 @@ export function AuthorForm({ author, onCancel }: AuthorFormProps) {
   };
 
   const loading = creating || updating;
-
-  console.log(author);
 
   return (
     <Card className="max-w-2xl mx-auto">

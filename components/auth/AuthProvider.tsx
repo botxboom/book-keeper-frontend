@@ -8,7 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { supabase } from "@/lib/supabase";
-import { Session, AuthError } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 
 // Type for the context
 type AuthContextType = {

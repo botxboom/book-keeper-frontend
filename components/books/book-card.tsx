@@ -27,7 +27,6 @@ interface BookCardProps {
 }
 
 export function BookCard({ book }: BookCardProps) {
-  console.log(book);
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star

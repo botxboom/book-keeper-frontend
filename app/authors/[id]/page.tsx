@@ -20,7 +20,6 @@ export async function generateStaticParams() {
   });
 
   const { data } = await res.json();
-  console.log(data);
   const authors = data?.authors || [];
   return authors.map((author: { id: string }) => ({ id: author.id }));
 }
@@ -31,6 +30,5 @@ export default function AuthorDetailPage({
   params: { id: string };
 }) {
   const authorId = params.id;
-  console.log(authorId);
   return <AuthorDetailClient authorId={authorId} />;
 }
