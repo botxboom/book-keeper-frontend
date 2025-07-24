@@ -222,6 +222,7 @@ export default function BookDetailClient({ bookId }: { bookId: string }) {
                       size="sm"
                       onClick={handleDelete}
                       disabled={deleting}
+                      aria-label="Delete book"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
