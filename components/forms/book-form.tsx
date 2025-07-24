@@ -49,6 +49,7 @@ export function BookForm({ book, onCancel }: BookFormProps) {
 
   const { data: authorsData } = useQuery(GET_AUTHORS, {
     variables: { limit: 100 },
+    fetchPolicy: "network-only"
   });
 
   const [createBook, { loading: creating }] = useMutation(CREATE_BOOK, {
