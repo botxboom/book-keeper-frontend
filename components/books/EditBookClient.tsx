@@ -13,7 +13,7 @@ export default function EditBookClient({ bookId }: { bookId: string }) {
   const { data, loading } = useQuery(GET_BOOKS, {
     variables: { filter: "", page: 1, limit: 100 },
     errorPolicy: "all",
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-first",
   });
 
   // Find the book by id

@@ -27,7 +27,7 @@ export default function AuthorsPage() {
       filter: "",
     },
     errorPolicy: "all",
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-first",
   });
 
   const authors = data?.authors;

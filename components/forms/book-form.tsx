@@ -52,7 +52,24 @@ export function BookForm({ book, onCancel }: BookFormProps) {
   });
 
   const [createBook, { loading: creating }] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: GET_BOOKS }],
+    update(cache, { data }) {
+      if (!data?.createBook) return;
+      const ITEMS_PER_PAGE = 12;
+      const variables = { filter: "", offset: 0, limit: ITEMS_PER_PAGE };
+      const existing = cache.readQuery({
+        query: GET_BOOKS,
+        variables,
+      }) as { books?: any[] } | null;
+      if (existing && Array.isArray(existing.books)) {
+        cache.writeQuery({
+          query: GET_BOOKS,
+          variables,
+          data: {
+            books: [data.createBook, ...existing.books],
+          },
+        });
+      }
+    },
     onCompleted: (data) => {
       router.push(`/books/${data.createBook.id}`);
     },

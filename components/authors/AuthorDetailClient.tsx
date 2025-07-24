@@ -17,13 +17,38 @@ export default function AuthorDetailClient({ authorId }: { authorId: string }) {
   const router = useRouter();
   const { session } = useAuth();
 
+
   const { data, loading, error } = useQuery(GET_AUTHORS, {
     variables: { filter: "", page: 1, limit: 100 },
     errorPolicy: "all",
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-first",
   });
 
   const [deleteAuthor, { loading: deleting }] = useMutation(DELETE_AUTHOR, {
+    update(cache, { data }) {
+      if (!data?.deleteAuthor) return;
+      const ITEMS_PER_PAGE = 12;
+      const variables = { filter: "", offset: 0, limit: ITEMS_PER_PAGE };
+      const existing = cache.readQuery({
+        query: GET_AUTHORS,
+        variables,
+      }) as { authors?: any[] } | null;
+      if (existing && Array.isArray(existing.authors)) {
+        cache.writeQuery({
+          query: GET_AUTHORS,
+          variables,
+          data: {
+            authors: existing.authors.filter((a) => a.id !== authorId),
+          },
+        });
+      }
+    },
+    refetchQueries: [
+      {
+        query: require("@/lib/graphql/queries").GET_BOOKS,
+        variables: { filter: "", offset: 0, limit: 12 },
+      },
+    ],
     onCompleted: () => {
       router.push("/authors");
     },

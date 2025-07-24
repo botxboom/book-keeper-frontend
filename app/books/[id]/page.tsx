@@ -17,6 +17,9 @@ export async function generateStaticParams() {
         }
       `,
     }),
+    next: {
+      revalidate: 60,
+    },
   });
 
   const { data } = await res.json();

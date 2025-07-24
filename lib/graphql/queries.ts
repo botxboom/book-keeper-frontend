@@ -1,5 +1,32 @@
 import { gql } from "@apollo/client";
 
+export const GET_BOOK = gql`
+  query GetBook($id: ID!) {
+    book(id: $id) {
+      id
+      title
+      description
+      published_date
+      cover_image
+      author {
+        id
+        name
+        biography
+        born_date
+        avatar
+      }
+      reviews {
+        id
+        bookId
+        user
+        rating
+        comment
+        createdAt
+      }
+    }
+  }
+`;
+
 export const GET_BOOKS = gql`
   query Books($filter: String, $page: Int, $limit: Int) {
     books(filter: $filter, page: $page, limit: $limit) {

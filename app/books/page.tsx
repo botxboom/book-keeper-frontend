@@ -26,8 +26,8 @@ export default function BooksPage() {
       offset: (currentPage - 1) * ITEMS_PER_PAGE,
       filter: "",
     },
-    errorPolicy: "all",
-    fetchPolicy: "network-only",
+    errorPolicy: "all", 
+    fetchPolicy: "cache-first",
   });
 
   // Use mock data if GraphQL query fails

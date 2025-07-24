@@ -12,9 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { ReviewForm } from "@/components/reviews/review-form";
 import { ReviewList } from "@/components/reviews/review-list";
-import { GET_BOOKS } from "@/lib/graphql/queries";
+import { GET_BOOK } from "@/lib/graphql/queries";
 import { DELETE_BOOK } from "@/lib/graphql/mutations";
-import { mockBooks } from "@/lib/mock-data";
 import {
   Star,
   Calendar,
@@ -27,19 +26,43 @@ import {
   Hash,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthProvider";
+import { GET_BOOKS } from "@/lib/graphql/queries";
 
 export default function BookDetailClient({ bookId }: { bookId: string }) {
   const router = useRouter();
   const [showReviewForm, setShowReviewForm] = useState(false);
   const { session } = useAuth();
 
-  const { data, loading, error, refetch } = useQuery(GET_BOOKS, {
-    variables: { filter: "", page: 1, limit: 100 },
-    errorPolicy: "all",
-    fetchPolicy: "network-only",
+  const { data, loading, error, refetch } = useQuery(GET_BOOK, {
+    variables: { id: bookId },
+    fetchPolicy: "cache-first",
   });
 
   const [deleteBook, { loading: deleting }] = useMutation(DELETE_BOOK, {
+    update(cache, { data }) {
+      if (!data?.deleteBook) return;
+      const ITEMS_PER_PAGE = 12;
+      const listVariables = { filter: "", offset: 0, limit: ITEMS_PER_PAGE };
+
+      // Update the books list cache
+      const existing = cache.readQuery({
+        query: GET_BOOKS,
+        variables: listVariables,
+      }) as { books?: any[] } | null;
+      if (existing && Array.isArray(existing.books)) {
+        cache.writeQuery({
+          query: GET_BOOKS,
+          variables: listVariables,
+          data: {
+            books: existing.books.filter((b) => b.id !== bookId),
+          },
+        });
+      }
+
+      // Optionally, evict the single book from the cache
+      cache.evict({ id: cache.identify({ __typename: "Book", id: bookId }) });
+      cache.gc();
+    },
     onCompleted: () => {
       router.push("/books");
     },
@@ -49,10 +72,7 @@ export default function BookDetailClient({ bookId }: { bookId: string }) {
     },
   });
 
-  // Find the book by id
-  const book =
-    data?.books?.find((b: any) => b.id === bookId) ||
-    mockBooks.find((b) => b.id === bookId);
+  const book = data?.book;
 
   const handleDelete = async () => {
     if (

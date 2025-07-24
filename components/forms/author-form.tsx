@@ -40,7 +40,24 @@ export function AuthorForm({ author, onCancel }: AuthorFormProps) {
   const [avatar, setAvatar] = useState(author?.avatar || "");
 
   const [createAuthor, { loading: creating }] = useMutation(CREATE_AUTHOR, {
-    refetchQueries: [{ query: GET_AUTHORS }],
+    update(cache, { data }) {
+      if (!data?.createAuthor) return;
+      const ITEMS_PER_PAGE = 12; // or import from the list page
+      const variables = { filter: "", offset: 0, limit: ITEMS_PER_PAGE };
+      const existing = cache.readQuery({
+        query: GET_AUTHORS,
+        variables,
+      }) as { authors?: any[] } | null;
+      if (existing && Array.isArray(existing.authors)) {
+        cache.writeQuery({
+          query: GET_AUTHORS,
+          variables,
+          data: {
+            authors: [data.createAuthor, ...existing.authors],
+          },
+        });
+      }
+    },
     onCompleted: (data) => {
       router.push(`/authors/${data.createAuthor.id}`);
     },

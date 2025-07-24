@@ -13,7 +13,7 @@ export default function EditAuthorClient({ authorId }: { authorId: string }) {
   const { data, loading } = useQuery(GET_AUTHORS, {
     variables: { filter: "", page: 1, limit: 100 },
     errorPolicy: "all",
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-first",
   });
 
   // Find the author by id
