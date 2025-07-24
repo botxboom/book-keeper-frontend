@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Users, Search, TrendingUp } from "lucide-react";
+import { BookOpen, Users, Book } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 export default function Home() {
@@ -13,15 +13,10 @@ export default function Home() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <div className="mb-8">
-          <BookOpen className="h-20 w-20 text-blue-600 mx-auto mb-4" />
+          <Book className="h-20 w-20 text-blue-600 mx-auto mb-4" />
           <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4">
             Welcome to <span className="text-blue-600">Book Keeper</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Your comprehensive digital library management system. Organize,
-            discover, and manage your book collection with powerful tools and
-            intuitive design.
-          </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

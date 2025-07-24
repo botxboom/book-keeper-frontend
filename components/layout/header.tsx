@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BookOpen, Search, User, Plus, Menu, X, Book } from "lucide-react";
+import { User, Plus, Menu, X, Book } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 export function Header() {
