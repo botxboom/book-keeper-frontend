@@ -49,7 +49,7 @@ export function BookForm({ book, onCancel }: BookFormProps) {
 
   const { data: authorsData } = useQuery(GET_AUTHORS, {
     variables: { limit: 100 },
-    fetchPolicy: "network-only"
+    fetchPolicy: "network-only",
   });
 
   const [createBook, { loading: creating }] = useMutation(CREATE_BOOK, {
@@ -95,17 +95,16 @@ export function BookForm({ book, onCancel }: BookFormProps) {
         title: formData.title,
         description: formData.description || undefined,
         published_date: formatDateForInput(formData.published_date),
-        authorId: formData.authorId,
         cover_image: coverImage || undefined,
       };
 
       if (isEdit && book?.id) {
         await updateBook({
-          variables: { id: book.id, ...input },
+          variables: { id: book.id, ...input, authorId: formData.authorId },
         });
       } else {
         await createBook({
-          variables: { ...input },
+          variables: { ...input, authorId: formData.authorId },
         });
       }
     } catch (error) {

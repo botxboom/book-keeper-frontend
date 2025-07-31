@@ -27,6 +27,25 @@ export const GET_BOOK = gql`
   }
 `;
 
+export const GET_AUTHOR = gql`
+  query GetAuthor($id: ID!) {
+    author(id: $id) {
+      id
+      name
+      biography
+      born_date
+      avatar
+      books {
+        id
+        title
+        description
+        published_date
+        cover_image
+      }
+    }
+  }
+`;
+
 export const GET_BOOKS = gql`
   query Books($filter: String, $page: Int, $limit: Int) {
     books(filter: $filter, page: $page, limit: $limit) {

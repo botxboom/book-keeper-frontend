@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { GET_AUTHORS } from "@/lib/graphql/queries";
+import { GET_AUTHORS, GET_AUTHOR } from "@/lib/graphql/queries";
 import { DELETE_AUTHOR } from "@/lib/graphql/mutations";
 import { mockAuthors } from "@/lib/mock-data";
 import { Edit, Trash2, ArrowLeft, BookOpen } from "lucide-react";
@@ -17,10 +17,8 @@ export default function AuthorDetailClient({ authorId }: { authorId: string }) {
   const router = useRouter();
   const { session } = useAuth();
 
-
-  const { data, loading, error } = useQuery(GET_AUTHORS, {
-    variables: { filter: "", page: 1, limit: 100 },
-    errorPolicy: "all",
+  const { data, loading, error } = useQuery(GET_AUTHOR, {
+    variables: { id: authorId },
     fetchPolicy: "cache-first",
   });
 
@@ -59,9 +57,7 @@ export default function AuthorDetailClient({ authorId }: { authorId: string }) {
   });
 
   // Find the author by id
-  const author =
-    data?.authors?.find((a: any) => a.id === authorId) ||
-    mockAuthors.find((a) => a.id === authorId);
+  const author = data?.author;
 
   const handleDelete = async () => {
     if (

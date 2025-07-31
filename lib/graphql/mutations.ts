@@ -36,6 +36,7 @@ export const UPDATE_BOOK = gql`
     $description: String
     $published_date: String
     $cover_image: String
+    $authorId: ID
   ) {
     updateBook(
       id: $id
@@ -43,6 +44,7 @@ export const UPDATE_BOOK = gql`
       description: $description
       published_date: $published_date
       cover_image: $cover_image
+      author_id: $authorId
     ) {
       id
       title
